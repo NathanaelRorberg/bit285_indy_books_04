@@ -24,21 +24,25 @@ namespace IndyBooks
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public IActionResult Get(long id)          
+        public IActionResult Get(long id)
         {
             var writers = _db.Writers;
-            if (id> 0)
+            if (id > 0)
             {
-                return Ok(writers.Where(w => w.Id == id).Select(w => new { id = w.Id, name = w.Name }));
+                return Json(writers/*.Where(w => w.Id == id)*/.Select(w => new { id = w.Id, name = w.Name }));
             }
             else
-            return Ok(writers.Select(w => new { id = w.Id, name = w.Name }));
+                return Json(writers.Select(w => new { id = w.Id, name = w.Name }));
         }
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post(Writer writer)
         {
+ 
+            _db.Writers.Add(writer);
+            _db.SaveChanges();
+            return Accepted() ;
         }
 
         // PUT api/<controller>/5
