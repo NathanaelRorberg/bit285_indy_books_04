@@ -29,7 +29,7 @@ namespace IndyBooks
             var writers = _db.Writers;
             if (id > 0)
             {
-                return Json(writers/*.Where(w => w.Id == id)*/.Select(w => new { id = w.Id, name = w.Name }));
+                return Json(writers.Where(w => w.Id == id).Select(w => new { id = w.Id, name = w.Name }));
             }
             else
                 return Json(writers.Select(w => new { id = w.Id, name = w.Name }));
@@ -37,9 +37,8 @@ namespace IndyBooks
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post(Writer writer)
+        public IActionResult Post([FromBody]Writer writer)
         {
- 
             _db.Writers.Add(writer);
             _db.SaveChanges();
             return Accepted() ;
@@ -47,8 +46,15 @@ namespace IndyBooks
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(long id, [FromBody]Writer writer)
         {
+            var writers = _db.Writers.Where(w => w.Id == id);
+            if(id = writers.)
+            {
+                _db.Update(writer/*_db.Writers.Where(w => w.Id == id)*/);
+                _db.SaveChanges();
+            }
+            return Accepted();
         }
 
         // DELETE api/<controller>/5
