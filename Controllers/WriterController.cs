@@ -16,16 +16,23 @@ namespace IndyBooks
         public WriterController(IndyBooksDataContext db) { _db = db; }
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var writers = _db.Writers;
+            return Ok(writers.Select(w => new { id = w.Id, name = w.Name }));
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(long id)          
         {
-            return "value";
+            var writers = _db.Writers;
+            if (id> 0)
+            {
+                return Ok(writers.Where(w => w.Id == id).Select(w => new { id = w.Id, name = w.Name }));
+            }
+            else
+            return Ok(writers.Select(w => new { id = w.Id, name = w.Name }));
         }
 
         // POST api/<controller>
